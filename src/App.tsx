@@ -34,6 +34,7 @@ function App() {
     const availableNotes : NoteType[] = notes.filter((note) => note.archived == false);
     return (
         <>
+            <Navbar />
             <div className="flex gap-4 p-4 justify-between">
                 <NoteList notes={availableNotes} />
             </div>
