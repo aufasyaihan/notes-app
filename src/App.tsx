@@ -3,6 +3,7 @@ import NoteList from "./components/NoteList";
 import { NoteType } from "./types/notes";
 import Navbar from "./components/Navbar";
 import Archived from "./components/Archived";
+import Button from "./UI/Button";
 
 const initialData: NoteType[] = [
     {
@@ -31,15 +32,32 @@ const initialData: NoteType[] = [
 function App() {
     const [notes, setNotes] = useState<NoteType[]>(initialData);
 
-    const archivedNotes : NoteType[] = notes.filter((note) => note.archived == true);
-    const availableNotes : NoteType[] = notes.filter((note) => note.archived == false);
+    const archiveNote = (id: number | string) => {
+        const noteToArchive = notes.find((note) => note.id === id);
+        if (noteToArchive) {
+            noteToArchive.archived = !noteToArchive.archived;
+            setNotes([...notes]);
+        }
+    }
+
+    const archivedNotes: NoteType[] = notes.filter(
+        (note) => note.archived == true
+    );
+    const availableNotes: NoteType[] = notes.filter(
+        (note) => note.archived == false
+    );
     return (
         <>
             <Navbar />
-            <div className="flex gap-4 p-4 justify-between">
-                <NoteList notes={availableNotes} />
-                <Archived notes={archivedNotes} />
-            </div>
+            <main className="mx-5 my-2">
+                <Button className="bg-indigo-500 text-white hover:bg-indigo-600">
+                    Create New
+                </Button>
+                <div className="flex gap-4 p-4 justify-between">
+                    <NoteList archive={archiveNote} notes={availableNotes} />
+                    <Archived archive={archiveNote} notes={archivedNotes} />
+                </div>
+            </main>
         </>
     );
 }
