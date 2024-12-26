@@ -4,6 +4,7 @@ import { NoteType } from "./types/notes";
 import Navbar from "./components/Navbar";
 import Archived from "./components/Archived";
 import Button from "./UI/Button";
+import CreateNote from "./components/CreateNote";
 
 const initialData: NoteType[] = [
     {
@@ -31,6 +32,11 @@ const initialData: NoteType[] = [
 
 function App() {
     const [notes, setNotes] = useState<NoteType[]>(initialData);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    const createNote = (note: NoteType) => {
+        setNotes([...notes, note]);
+    };
 
     const archiveNote = (id: number | string) => {
         const noteToArchive = notes.find((note) => note.id === id);
@@ -38,11 +44,11 @@ function App() {
             noteToArchive.archived = !noteToArchive.archived;
             setNotes([...notes]);
         }
-    }
+    };
 
     const deleteNote = (id: number | string) => {
         setNotes(notes.filter((note) => note.id !== id));
-    }
+    };
 
     const archivedNotes: NoteType[] = notes.filter(
         (note) => note.archived == true
@@ -54,12 +60,28 @@ function App() {
         <>
             <Navbar />
             <main className="mx-5 my-2">
-                <Button className="bg-indigo-500 text-white hover:bg-indigo-600">
+                <Button
+                    className="bg-indigo-500 text-white hover:bg-indigo-600"
+                    onClick={() => setModalOpen(true)}
+                >
                     Create New
                 </Button>
+                <CreateNote
+                    isOpen={isModalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onSubmit={createNote}
+                />
                 <div className="flex gap-4 p-4 justify-between">
-                    <NoteList onDelete={deleteNote} archive={archiveNote} notes={availableNotes} />
-                    <Archived onDelete={deleteNote} archive={archiveNote} notes={archivedNotes} />
+                    <NoteList
+                        onDelete={deleteNote}
+                        archive={archiveNote}
+                        notes={availableNotes}
+                    />
+                    <Archived
+                        onDelete={deleteNote}
+                        archive={archiveNote}
+                        notes={archivedNotes}
+                    />
                 </div>
             </main>
         </>
