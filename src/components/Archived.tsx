@@ -4,9 +4,11 @@ import Button from "../UI/Button";
 const Archived = ({
     notes,
     archive,
+    onDelete
 }: {
     notes: NoteType[];
     archive: (id: number | string) => void;
+    onDelete: (id: number | string) => void;
 }) => {
     return (
         <div className="flex flex-col gap-2 m-3 w-1/2">
@@ -31,7 +33,7 @@ const Archived = ({
                                     {note.title}
                                 </h2>
                                 <div className="flex">
-                                    <Button className="bg-red-500 text-white hover:bg-red-600 ">
+                                    <Button className="bg-red-500 text-white hover:bg-red-600" onClick={() => onDelete(note.id)}>
                                         Delete
                                     </Button>
                                     <Button

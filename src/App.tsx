@@ -40,6 +40,10 @@ function App() {
         }
     }
 
+    const deleteNote = (id: number | string) => {
+        setNotes(notes.filter((note) => note.id !== id));
+    }
+
     const archivedNotes: NoteType[] = notes.filter(
         (note) => note.archived == true
     );
@@ -54,8 +58,8 @@ function App() {
                     Create New
                 </Button>
                 <div className="flex gap-4 p-4 justify-between">
-                    <NoteList archive={archiveNote} notes={availableNotes} />
-                    <Archived archive={archiveNote} notes={archivedNotes} />
+                    <NoteList onDelete={deleteNote} archive={archiveNote} notes={availableNotes} />
+                    <Archived onDelete={deleteNote} archive={archiveNote} notes={archivedNotes} />
                 </div>
             </main>
         </>

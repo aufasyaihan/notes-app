@@ -1,7 +1,15 @@
 import { NoteType } from "../types/notes";
 import Button from "../UI/Button";
 
-const NoteList = ({ notes, archive }: { notes: NoteType[], archive : (id: number | string) => void }) => {
+const NoteList = ({
+    notes,
+    archive,
+    onDelete
+}: {
+    notes: NoteType[];
+    archive: (id: number | string) => void;
+    onDelete: (id: number | string) => void;
+}) => {
     return (
         <div className="flex flex-col gap-2 m-3 w-1/2">
             <h2 className="text-xl font-bold">Available</h2>
@@ -25,10 +33,13 @@ const NoteList = ({ notes, archive }: { notes: NoteType[], archive : (id: number
                                     {note.title}
                                 </h2>
                                 <div className="flex">
-                                    <Button className="bg-red-500 text-white hover:bg-red-600 ">
+                                    <Button className="bg-red-500 text-white hover:bg-red-600" onClick={() => onDelete(note.id)}>
                                         Delete
                                     </Button>
-                                    <Button className="bg-orange-400 text-white hover:bg-orange-500" onClick={() => archive(note.id)}>
+                                    <Button
+                                        className="bg-orange-400 text-white hover:bg-orange-500"
+                                        onClick={() => archive(note.id)}
+                                    >
                                         {note.archived
                                             ? "Unarchive"
                                             : "Archive"}
