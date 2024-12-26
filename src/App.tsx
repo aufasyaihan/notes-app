@@ -31,12 +31,14 @@ const initialData: NoteType[] = [
 function App() {
     const [notes, setNotes] = useState<NoteType[]>(initialData);
 
+    const archivedNotes : NoteType[] = notes.filter((note) => note.archived == true);
     const availableNotes : NoteType[] = notes.filter((note) => note.archived == false);
     return (
         <>
             <Navbar />
             <div className="flex gap-4 p-4 justify-between">
                 <NoteList notes={availableNotes} />
+                <Archived notes={archivedNotes} />
             </div>
         </>
     );
