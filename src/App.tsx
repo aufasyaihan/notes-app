@@ -70,17 +70,16 @@ function App() {
     );
     return (
         <>
-            <Navbar />
+            <Navbar>
+                <SearchBar handleSubmit={handleSearch} />
+            </Navbar>
             <main className="mx-5 my-2">
-                <div className="flex justify-between items-center">
-                    <Button
-                        className="bg-indigo-500 text-white hover:bg-indigo-600"
-                        onClick={() => setModalOpen(true)}
-                    >
-                        Create New
-                    </Button>
-                    <SearchBar handleSubmit={handleSearch}/>
-                </div>
+                <Button
+                    className="bg-indigo-500 text-white hover:bg-indigo-600"
+                    onClick={() => setModalOpen(true)}
+                >
+                    Create New
+                </Button>
                 <CreateNote
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
