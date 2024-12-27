@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Archived from "./components/Archived";
 import Button from "./UI/Button";
 import CreateNote from "./components/CreateNote";
+import SearchBar from "./components/Search";
 
 const initialData: NoteType[] = [
     {
@@ -33,6 +34,7 @@ const initialData: NoteType[] = [
 function App() {
     const [notes, setNotes] = useState<NoteType[]>(initialData);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const createNote = (note: NoteType) => {
         setNotes([...notes, note]);
@@ -50,22 +52,35 @@ function App() {
         setNotes(notes.filter((note) => note.id !== id));
     };
 
-    const archivedNotes: NoteType[] = notes.filter(
-        (note) => note.archived == true
+    const handleSearch = (keyword: string) => {
+        setSearchTerm(keyword.toLowerCase());
+    };
+
+    const filteredNotes = notes.filter(
+        (note) =>
+            note.title.toLowerCase().includes(searchTerm) ||
+            note.body.toLowerCase().includes(searchTerm)
     );
-    const availableNotes: NoteType[] = notes.filter(
-        (note) => note.archived == false
+
+    const archivedNotes: NoteType[] = filteredNotes.filter(
+        (note) => note.archived
+    );
+    const availableNotes: NoteType[] = filteredNotes.filter(
+        (note) => !note.archived
     );
     return (
         <>
             <Navbar />
             <main className="mx-5 my-2">
-                <Button
-                    className="bg-indigo-500 text-white hover:bg-indigo-600"
-                    onClick={() => setModalOpen(true)}
-                >
-                    Create New
-                </Button>
+                <div className="flex justify-between items-center">
+                    <Button
+                        className="bg-indigo-500 text-white hover:bg-indigo-600"
+                        onClick={() => setModalOpen(true)}
+                    >
+                        Create New
+                    </Button>
+                    <SearchBar handleSubmit={handleSearch}/>
+                </div>
                 <CreateNote
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
