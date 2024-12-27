@@ -39,6 +39,13 @@ const CreateNote = ({ onClose, onSubmit, isOpen }: ModalCreateProps) => {
         onClose();
     };
 
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        if (newValue.length <= 50) {
+            setTitle(newValue);
+        }
+    };
+
     return (
         <dialog
             ref={dialogRef}
@@ -52,19 +59,34 @@ const CreateNote = ({ onClose, onSubmit, isOpen }: ModalCreateProps) => {
             <h2 className="text-xl font-bold mb-4">Create New Note</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1" htmlFor="title">
+                    <label
+                        className="block text-sm font-medium mb-1"
+                        htmlFor="title"
+                    >
                         Title
                     </label>
                     <input
                         id="title"
                         className="w-full border rounded p-2"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={handleTitleChange}
                         required
                     />
+                    {title.length >= 50 ? (
+                        <p className="text-sm text-red-500 mt-1">
+                            Title is too long, you have reached the limit.
+                        </p>
+                    ) : (
+                        <p className="text-sm text-gray-600 mt-1">
+                            {title.length}/{50} characters used.
+                        </p>
+                    )}
                 </div>
                 <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1" htmlFor="body">
+                    <label
+                        className="block text-sm font-medium mb-1"
+                        htmlFor="body"
+                    >
                         Body
                     </label>
                     <textarea
@@ -83,7 +105,10 @@ const CreateNote = ({ onClose, onSubmit, isOpen }: ModalCreateProps) => {
                     >
                         Cancel
                     </button>
-                    <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded">
+                    <button
+                        type="submit"
+                        className="bg-indigo-500 text-white px-4 py-2 rounded"
+                    >
                         Save
                     </button>
                 </div>
